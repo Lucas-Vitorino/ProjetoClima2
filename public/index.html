@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clima Agora</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f2f2f2;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: #222;
+      color: #eee;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    input, button {
+      padding: 10px;
+      font-size: 1rem;
+      margin: 10px 0;
+      width: 100%;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+    }
+
+    .theme-toggle {
+      margin-top: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>☁️ Clima Agora</h1>
+    <input type="text" id="city" placeholder="Digite o nome da cidade" />
+    <button onclick="buscarClima()">Buscar</button>
+    <div class="result" id="resultado"></div>
+
+    <div class="theme-toggle">
+      <label>
+        <input type="checkbox" id="modoToggle" onchange="toggleModo()">
+        Modo Escuro
+      </label>
+    </div>
+  </div>
+
+  <script>
+    function buscarClima() {
+      const cidade = document.getElementById('city').value;
+      const resultado = document.getElementById('resultado');
+      resultado.innerHTML = '🔄 Buscando...';
+
+      fetch(`/api/weather?city=${encodeURIComponent(cidade)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            resultado.innerHTML = `⚠️ Erro: ${data.error}`;
+          } else {
+            resultado.innerHTML = `
+              🌆 Cidade: <strong>${data.city}</strong><br/>
+              🌡️ Temperatura: <strong>${data.temperature}°C</strong><br/>
+              ☁️ Condição: <strong>${data.description}</strong>
+            `;
+          }
+        })
+        .catch(err => {
+          resultado.innerHTML = '❌ Erro ao buscar dados.';
+          console.error(err);
+        });
+    }
+
+    // Modo escuro/claro
+    function toggleModo() {
+      document.body.classList.toggle('dark');
+    }
+  </script>
+</body>
+</html>
