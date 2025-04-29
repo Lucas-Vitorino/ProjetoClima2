@@ -30,3 +30,18 @@ Este projeto tem como objetivo exibir o clima atual de qualquer cidade utilizand
    ```bash
    git clone https://github.com/seu-usuario/ProjetoClima.git
    cd ProjetoClima
+
+2. Crie um arquivo .env na raiz do projeto e adicione sua chave da API:
+   
+   API_KEY=sua_chave_da_openweathermap_aqui
+   
+3.Instale as dependências :
+   npm install
+
+4. Inicie o servidor:
+   npm start
+   
+5.O projeto estará disponível em:
+   http://localhost:3000.
+
+   
