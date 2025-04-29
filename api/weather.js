@@ -1,13 +1,11 @@
-// api/weather.js
-
 const fetch = require('node-fetch');
 
 module.exports = async (req, res) => {
-  const { city } = req.query;
+  const city = req.query.city;
   const apiKey = process.env.API_KEY;
 
   if (!city) {
-    return res.status(400).json({ error: 'Parâmetro city obrigatório' });
+    return res.status(400).json({ error: 'Parâmetro "city" é obrigatório.' });
   }
 
   try {
@@ -19,12 +17,13 @@ module.exports = async (req, res) => {
       return res.status(data.cod).json({ error: data.message });
     }
 
-    res.status(200).json({
+    res.json({
       city: data.name,
       temperature: data.main.temp,
       description: data.weather[0].description,
     });
   } catch (error) {
-    res.status(500).json({ error: 'Erro interno' });
+    console.error('Erro ao buscar dados do clima:', error);
+    res.status(500).json({ error: 'Erro interno no servidor' });
   }
 };
